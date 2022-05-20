@@ -3,7 +3,10 @@
 #' @param request Internal parameter for `{shiny}`. 
 #'     DO NOT REMOVE.
 #' @import shiny
-#' 
+#' @importFrom vembedr embed_url
+#' @importFrom plotly PlotlyOutput
+#' @importFrom DT DTOutput
+#' @importFrom bslib bs_theme 
 #' 
 #' @noRd
 app_ui <- function(request) {
@@ -500,7 +503,6 @@ app_ui <- function(request) {
 #' resources inside the Shiny application. 
 #' 
 #' @import shiny
-#' @importFrom base head 
 #' 
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
 #' @noRd

@@ -5,34 +5,46 @@
 #' 
 #' @import shiny
 #' 
-#' @importFrom base library  
-#' @importFrom base is.null 
-#' @importFrom base readRDS
-#' @importFrom base options
-#' @importFrom base typeof
-#' @importFrom base length 
-#' @importFrom base names
-#' @importFrom base grep
-#' @importFrom base colnames
-#' @importFrom base lapply 
-#' @importFrom base eval
-#' @importFrom base parse
-#' @importFrom base unique
-#' @importFrom base quantile 
-#' @importFrom base toupper
-#' @importFrom base sort
-#' @importFrom base nrow
-#' @importFrom base paste0 
-#' @importFrom base rownames 
-#' @importFrom base round 
-#' @importFrom base max  
-#' @importFrom base cbind
-#' @importFrom base c
-#' @importFrom base as.integer 
-#' @importFrom base do.call 
-#' @importFrom base saveRDS 
-#' @importFrom graphics layout
-#' 
+#' @importFrom dplyr filter 
+#' @importFrom dplyr last
+#' @importFrom dplyr left_join
+#' @importFrom DT renderDT
+#' @importFrom DT datatable
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 labs 
+#' @importFrom ggplot2 theme 
+#' @importFrom ggplot2 ggtitle 
+#' @importFrom ggplot2 xlab 
+#' @importFrom ggplot2 geom_vline  
+#' @importFrom ggplot2 scale_color_manual 
+#' @importFrom ggplot2 scale_fill_manual 
+#' @importFrom ggplot2 element_text 
+#' @importFrom ggplot2 ylab 
+#' @importFrom ggplot2 geom_violin 
+#' @importFrom ggplot2 geom_hline
+#' @importFrom ggplot2 scale_x_log10 
+#' @importFrom ggplot2 geom_density
+#' @importFrom ggplot2 scale_y_log10
+#' @importFrom ggpubr get_palette 
+#' @importFrom plotly config
+#' @importFrom plotly ggplotly
+#' @importFrom plotly expr_reduc_plot_1d 
+#' @importFrom plotly event_register
+#' @importFrom plotly plot_ly
+#' @importFrom plotly renderPlot
+#' @importFrom plotly renderPlotly
+#' @importFrom plotly reduc_plot_3d
+#' @importFrom plotly reduc_plot
+#' @importFrom plotly layout
+#' @importFrom SeuratObject Assays
+#' @importFrom SeuratObject DefaultAssay 
+#' @importFrom SeuratObject FetchData
+#' @importFrom SeuratObject Reductions
+#' @importFrom SeuratObject Embeddings
+#' @importFrom stats quantile 
+#' @importFrom SeuratObject GetAssayData
+#' @importFrom rlang is_empty
 #' 
 #' @noRd
 app_server <- function( input, output, session ) {
@@ -162,6 +174,8 @@ app_server <- function( input, output, session ) {
         
         #initialize QA distribution plot before if/else statements below so that the plot object can be accessed outside of the if/else statements
         final_distrib_plot <- base_distrib_plot
+        
+
         
         #create density/bar plot for selected input. If integrated object is uploaded, then the original identity of the cells will separate into graphs per sample
         if (input$QA %in% "ADT Count Per Cell") {
@@ -430,7 +444,6 @@ app_server <- function( input, output, session ) {
           
           SeuratObject::DefaultAssay(myso) <- input$Assay_1d
           count_data <- SeuratObject::FetchData(object = myso, vars = color_x, slot = "data")
-          
           #create dataframe from reduction selected
           cell_data <- data.frame(eval(parse(text = paste0("SeuratObject::Embeddings(object = myso, reduction = '", reduc, "')"))))
           
@@ -467,6 +480,7 @@ app_server <- function( input, output, session ) {
       
       
       # ----- render reactive reduction plots -----
+          
       output$exploration_reduct_1d <- renderPlotly({
         expr_reduc_plot_1d()
       })
@@ -527,7 +541,6 @@ app_server <- function( input, output, session ) {
         ) 
         if (is.null(selected_counts_dt)) "Brushed points appear here (double-click to clear)" else selected_counts_dt
       })
-      
     }) # belongs to OBSERVE WRAPPER for expression tab
     
     
@@ -612,7 +625,6 @@ app_server <- function( input, output, session ) {
           count_data_y <- SeuratObject::FetchData(object = myso, vars = color_y, slot = "data")
           # extract only the count values as a vector from the original count data dataframe
           count_data_y <- count_data_y[[color_y]]
-          
           #create dataframe from reduction selected
           cell_data <- data.frame(eval(parse(text = paste0("SeuratObject::Embeddings(object = myso, reduction = '", reduc, "')"))))
           
@@ -625,6 +637,7 @@ app_server <- function( input, output, session ) {
           coexpression_df <- data.frame(x_value = round(ngrid * count_data_x / max(count_data_x)),
                                         y_value = round(ngrid * count_data_y / max(count_data_y)))
           coexpression_umap_df <- cbind(coexpression_df, cell_data) #combine umap reduction data with expression data
+      
           mapped_df <- dplyr::left_join(coexpression_umap_df, color_matrix_df) # map hex color codes to interpolated gene expression values in merged data and create a new data frame
           
           
@@ -961,6 +974,7 @@ app_server <- function( input, output, session ) {
                                                                                    reactive_last_buttons_clicked = last_buttons_clicked)
       }) #end of gating logic for events triggered by clicking gate button
       
+          
       
       # ----- generate reactive gating dataframe -----
       reactive_gating_df <- reactive({
