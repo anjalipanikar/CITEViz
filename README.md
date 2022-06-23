@@ -1,4 +1,4 @@
-# CITE-Viz
+# CITE-Viz: Replicating the Interactive Flow Cytometry Workflow in CITE-Seq
 
 Garth L. Kong, Thai T. Nguyen, Wesley K. Rosales, Anjali D. Panikar, John H. W. Cheney, Brittany M. Curtiss, Sarah A. Carratt, Theodore P. Braun, Julia E. Maxson
 
