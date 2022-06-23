@@ -1,5 +1,7 @@
 # CITE-Viz
 
+Garth L. Kong, Thai T. Nguyen, Wesley K. Rosales, Anjali D. Panikar, John H. W. Cheney, Brittany M. Curtiss, Sarah A. Carratt, Theodore P. Braun, Julia E. Maxson
+
 ## Background
 
 The rapid advancement of new genomic sequencing technology has enabled the development of multi-omic single-cell sequencing assays. These assays profile multiple modalities in the same cell and can often yield new insights not revealed with a single modality. For example, CITE-Seq (Cellular Indexing of Transcriptomes and Epitopes by Sequencing) simultaneously profiles the single-cell RNA transcriptome and the surface protein expression. The extra dimension of surface protein markers can be used to further identify cell clusters – an essential step for downstream analyses and interpretation. Additionally, multi-dimensional datasets like CITE-Seq require nuanced visualization methods to accurately assess the data. To facilitate cell cluster classification and visualization in CITE-Seq, we developed CITE-Viz. 
